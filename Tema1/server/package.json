@@ -1,0 +1,11 @@
+{
+  "name": "webservercc",
+  "version": "1.0.0",
+  "description": "First homework for cloud computing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Diaconu Narcis",
+  "license": "ISC"
+}

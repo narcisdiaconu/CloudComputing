@@ -1,0 +1,23 @@
+.main {
+    color: "#f2g4e2";
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#result {
+    position: absolute;
+    width: 45%;
+    height: 90%;
+}
+
+#result:disabled {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+#stats-div {
+    font-size: 14px;
+}

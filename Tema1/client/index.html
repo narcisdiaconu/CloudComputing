@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home page</title>
+    <link rel="stylesheet" href="./styles/index.css">
+</head>
+
+<body>
+    <p><a href="./metrics.html">Metrics page</a></p>
+    <select id="categories">
+        <option value="none">All events</option>        
+    </select>
+    <button onclick="getData()">Get events</button>
+    <div id="received-data-container">
+        <h3 id="received-data-title"></h3>
+        <ol id="received-data-list">
+        </ol>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
