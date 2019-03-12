@@ -1,15 +1,22 @@
-const Author = require('../models/author.model');
-const url = require('url');
+const City = require('../models/city.model');
 
 function checkParametres(body) {
     let checkParams = {};
     checkParams.error = false;
-    if (body.firstName === undefined) {
-        checkParams.firstName = 'required';
+    if (body.name === undefined) {
+        checkParams.name = 'required';
         checkParams.error = true;
     }
-    if (body.lastName === undefined) {
-        checkParams.lastName = 'required';
+    if (body.country === undefined) {
+        checkParams.country = 'required';
+        checkParams.error = true;
+    }
+    if (body.latitude === undefined) {
+        checkParams.latitude = 'required';
+        checkParams.error = true;
+    }
+    if (body.longitude === undefined) {
+        checkParams.longitude = 'required';
         checkParams.error = true;
     }
     return checkParams;
@@ -17,10 +24,10 @@ function checkParametres(body) {
 
 module.exports = {
     getAll: (req, res) => {
-        Author.find()
-            .then(authors => {
+        City.find()
+            .then(cities => {
                 res.writeHead(200, { 'Content-type': 'application/json' });
-                res.end(JSON.stringify(authors));
+                res.end(JSON.stringify(cities));
             })
             .catch(err => {
                 res.writeHead(500, { 'Content-type': 'text/plain' });
@@ -28,20 +35,20 @@ module.exports = {
             });
     },
     getById: (req, res) => {
-        Author.findById(req.id)
-            .then(author => {
-                if (!author) {
+        City.findById(req.id)
+            .then(city => {
+                if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.id} not found.`);
                     return;
                 }
                 res.writeHead(200, { 'Content-type': 'application/json' });
-                res.end(JSON.stringify(author));
+                res.end(JSON.stringify(city));
             })
             .catch(err => {
                 if (err.kind === 'ObjectId') {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.id} not found.`);
                     return;
                 }
                 res.writeHead(500);
@@ -56,12 +63,14 @@ module.exports = {
             res.end(JSON.stringify(checkParams));
             return;
         }
-        const author = new Author({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName
+        const city = new City({
+            name: req.body.name,
+            country: req.body.country,
+            latitude: req.body.latitude,
+            longitude: req.body.longitude
         });
 
-        author.save()
+        city.save()
             .then(data => {
                 let location = `http://${req.headers.host}${req.url}/${data._id}`;
                 res.writeHead(201, { 'Content-type': 'application/json', 'Location': location });
@@ -73,21 +82,21 @@ module.exports = {
             });
     },
     delete: (req, res) => {
-        Author.findByIdAndRemove(req.id)
-            .then(author => {
-                if (!author) {
+        City.findByIdAndRemove(req.id)
+            .then(city => {
+                if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found!`);
+                    res.end(`City with id ${req.id} not found!`);
                     return;
                 }
                 res.writeHead(200, { 'Content-type': 'text/plain' });
-                res.end('Author deleted succesfully!');
+                res.end('City deleted succesfully!');
                 return;
             })
             .catch(err => {
                 if (err.kind === 'ObjectId' || err.name === 'NotFound') {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found!`);
+                    res.end(`City with id ${req.id} not found!`);
                     return;
                 }
                 res.writeHead(500, { 'Content-type': 'text/plain' });
@@ -102,14 +111,16 @@ module.exports = {
             res.end(JSON.stringify(checkParams));
             return;
         }
-        Author.findByIdAndUpdate(req.id, {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName
+        City.findByIdAndUpdate(req.id, {
+                name: req.body.name,
+                country: req.body.country,
+                latitude: req.body.latitude,
+                longitude: req.body.longitude
             }, { new: true })
-            .then(author => {
-                if (!author) {
+            .then(city => {
+                if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found!`);
+                    res.end(`City with id ${req.id} not found!`);
                     return;
                 }
                 res.writeHead(204);
@@ -118,7 +129,7 @@ module.exports = {
             .catch(err => {
                 if (err.kind === 'ObjectId') {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found!`);
+                    res.end(`City with id ${req.id} not found!`);
                     return;
                 }
                 res.writeHead(500, { 'Content-type': 'text/plain' });

@@ -1,20 +1,19 @@
-const Book = require('../models/book.model');
-const Author = require('../models/author.model');
-const url = require('url');
+const Attraction = require('../models/attraction.model');
+const City = require('../models/city.model');
 
 module.exports = {
     getAll: (req, res) => {
-        Author.findById(req.authorId)
-            .then(author => {
-                if (!author) {
+        City.findById(req.cityId)
+            .then(city => {
+                if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.id} not found.`);
                     return;
                 }
-                Book.find({ author: req.authorId })
-                    .then(books => {
+                Attraction.find({ city: req.cityId })
+                    .then(attractions => {
                         res.writeHead(200, { 'Content-type': 'application/json' });
-                        res.end(JSON.stringify(books));
+                        res.end(JSON.stringify(attractions));
                     })
                     .catch(err => {
                         res.writeHead(500, { 'Content-type': 'text/plain' });
@@ -24,7 +23,7 @@ module.exports = {
             .catch(err => {
                 if (err.kind === 'ObjectId') {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.id} not found.`);
                     return;
                 }
                 res.writeHead(500);
@@ -32,27 +31,27 @@ module.exports = {
             });
     },
     getById: (req, res) => {
-        Author.findById(req.authorId)
-            .then(author => {
-                if (!author) {
+        City.findById(req.cityId)
+            .then(city => {
+                if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.id} not found.`);
                     return;
                 }
-                Book.findOne({ _id: req.bookId, author: req.authorId })
-                    .then(book => {
-                        if (!book) {
+                Attraction.findOne({ _id: req.attractionId, city: req.cityId })
+                    .then(attraction => {
+                        if (!attraction) {
                             res.writeHead(404, { 'Content-type': 'text/plain' });
-                            res.end(`Book with id ${req.bookId} for author with id ${req.authorId} not found.`);
+                            res.end(`Attraction with id ${req.attractionId} for City with id ${req.cityId} not found.`);
                             return;
                         }
                         res.writeHead(200, { 'Content-type': 'application/json' });
-                        res.end(JSON.stringify(book));
+                        res.end(JSON.stringify(attraction));
                     })
                     .catch(err => {
                         if (err.kind === 'ObjectId') {
                             res.writeHead(404, { 'Content-type': 'text/plain' });
-                            res.end(`Book with id ${req.bookId} for author with id ${req.authorId} not found.`);
+                            res.end(`Attraction with id ${req.attractionId} for City with id ${req.cityId} not found.`);
                             return;
                         }
                         res.writeHead(500);
@@ -62,7 +61,7 @@ module.exports = {
             .catch(err => {
                 if (err.kind === 'ObjectId') {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
                 res.writeHead(500);
@@ -70,20 +69,24 @@ module.exports = {
             });
     },
     create: (req, res) => {
-        Author.findById(req.authorId)
-            .then(author => {
-                if (!author) {
+        City.findById(req.cityId)
+            .then(city => {
+                if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.authorId} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
-                const book = new Book({
-                    title: req.body.title,
-                    author: req.authorId
+                const attraction = new Attraction({
+                    name: req.body.name,
+                    description: req.body.description,
+                    address: req.body.address,
+                    city: req.cityId
                 });
 
-                book.save()
+                attraction.save()
                     .then(data => {
+                        city.attractions.push(parseInt(data._id));
+                        city.save();
                         let location = `http://${req.headers.host}${req.url}/${data._id}`;
                         res.writeHead(201, { 'Content-type': 'application/json', 'Location': location });
                         res.end(JSON.stringify(data));
@@ -92,13 +95,11 @@ module.exports = {
                         res.writeHead(500, { 'Content-type': 'text/plain' });
                         res.end(err.message);
                     });
-                author.books.push(book._id);
-                author.save();
             })
             .catch(err => {
                 if (err.kind === 'ObjectId') {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.authorId} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
                 res.writeHead(500);
@@ -106,20 +107,23 @@ module.exports = {
             });
     },
     update: (req, res) => {
-        Author.findById(req.authorId)
-            .then(author => {
-                if (!author) {
+        City.findById(req.cityId)
+            .then(city => {
+                if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
-                Book.findByIdAndUpdate(req.bookId, {
-                        title: req.body.title
+                Attraction.findByIdAndUpdate(req.attractionId, {
+                        name: req.body.name,
+                        description: req.body.description,
+                        address: req.body.address,
+                        city: req.cityId
                     }, { new: true })
-                    .then(book => {
-                        if (!book) {
+                    .then(attraction => {
+                        if (!attraction) {
                             res.writeHead(404, { 'Content-type': 'text/plain' });
-                            res.end(`Book with id ${req.bookId} not found!`);
+                            res.end(`Attraction with id ${req.attractionId} not found!`);
                             return;
                         }
                         res.writeHead(204);
@@ -128,7 +132,7 @@ module.exports = {
                     .catch(err => {
                         if (err.kind === 'ObjectId') {
                             res.writeHead(404, { 'Content-type': 'text/plain' });
-                            res.end(`Book with id ${req.bookId} not found!`);
+                            res.end(`Attraction with id ${req.attractionId} not found!`);
                             return;
                         }
                         res.writeHead(500, { 'Content-type': 'text/plain' });
@@ -138,7 +142,7 @@ module.exports = {
             .catch(err => {
                 if (err.kind === 'ObjectId') {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
                 res.writeHead(500);
@@ -146,28 +150,30 @@ module.exports = {
             });
     },
     delete: (req, res) => {
-        Author.findById(req.authorId)
-            .then(author => {
-                if (!author) {
+        City.findById(req.cityId)
+            .then(city => {
+                if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
-                Book.findByIdAndRemove(req.bookId)
-                    .then(book => {
-                        if (!book) {
+                Attraction.findByIdAndRemove(req.attractionId)
+                    .then(attraction => {
+                        if (!attraction) {
                             res.writeHead(404, { 'Content-type': 'text/plain' });
-                            res.end(`Book with id ${req.bookId} not found!`);
+                            res.end(`Attraction with id ${req.attractionId} not found!`);
                             return;
                         }
+                        city.attractions.splice(city.attractions.indexOf(attraction._id), 1);
+                        city.save();
                         res.writeHead(200, { 'Content-type': 'text/plain' });
-                        res.end('Book deleted succesfully!');
+                        res.end('Attraction deleted succesfully!');
                         return;
                     })
                     .catch(err => {
                         if (err.kind === 'ObjectId' || err.name === 'NotFound') {
                             res.writeHead(404, { 'Content-type': 'text/plain' });
-                            res.end(`Book with id ${req.bookId} not found!`);
+                            res.end(`Attraction with id ${req.attractionId} not found!`);
                             return;
                         }
                         res.writeHead(500, { 'Content-type': 'text/plain' });
@@ -177,7 +183,7 @@ module.exports = {
             .catch(err => {
                 if (err.kind === 'ObjectId') {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`Author with id ${req.id} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
                 res.writeHead(500);
