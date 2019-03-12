@@ -8,8 +8,8 @@ const AuthorSchema = Schema({
     _id: Schema.Types.ObjectId,
     firstName: String,
     lastName: String,
-    books: [{ type: Schema.Types.ObjectId, ref: 'Book' }]
-});
+    books: [{ type: Schema.Types.Number, ref: 'Book' }]
+}, { versionKey: false });
 AuthorSchema.plugin(autoIncrement.plugin, 'Author');
 
 module.exports = mongoose.model('Author', AuthorSchema);

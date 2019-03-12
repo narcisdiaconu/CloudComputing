@@ -8,8 +8,6 @@ module.exports = {
         res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 
-        let regex = '/api/([a-zA-Z]+)(.*)';
-        let parsed = req.url.match(regex);
         let parsedUrl = req.url.split('/');
         parsedUrl.splice(0, 2);
 
@@ -22,7 +20,7 @@ module.exports = {
                 try {
                     req.body = JSON.parse(body);
                 } catch (err) {
-                    res.writeHead(404);
+                    res.writeHead(400);
                     res.end();
                     return;
                 }
@@ -80,10 +78,16 @@ module.exports = {
                         return;
                     }
 
-                    res.writeHead(400);
+                    res.writeHead(404);
                     res.end();
                     break;
                 case 'POST':
+                    if (req.headers['content-type'] !== 'application/json') {
+                        res.writeHead(400);
+                        res.end('Invalid data!');
+                        return;
+                    }
+
                     if (parsedUrl[0] === 'authors' && parsedUrl.length === 1) {
                         authorController.create(req, res);
                         return;
@@ -114,7 +118,7 @@ module.exports = {
                         return;
                     }
 
-                    res.writeHead(400);
+                    res.writeHead(404);
                     res.end();
                     break;
                 case 'DELETE':
@@ -157,11 +161,17 @@ module.exports = {
                         return;
                     }
 
-                    res.writeHead(400);
+                    res.writeHead(404);
                     res.end();
                     break;
 
                 case 'PUT':
+                    if (req.headers['content-type'] !== 'application/json') {
+                        res.writeHead(400);
+                        res.end('Invalid data!');
+                        return;
+                    }
+
                     if (parsedUrl[0] === 'authors' && parsedUrl.length === 2) {
                         let numberRegex = '[0-9]+';
                         if (!parsedUrl[1].match(numberRegex)) {
@@ -201,11 +211,11 @@ module.exports = {
                         return;
                     }
 
-                    res.writeHead(400);
+                    res.writeHead(404);
                     res.end();
                     break;
                 default:
-                    res.writeHead(400);
+                    res.writeHead(404);
                     res.end();
                     break;
             }

@@ -1,4 +1,5 @@
 const Author = require('../models/author.model');
+const url = require('url');
 
 function checkParametres(body) {
     let checkParams = {};
@@ -62,7 +63,8 @@ module.exports = {
 
         author.save()
             .then(data => {
-                res.writeHead(200, { 'Content-type': 'application/json' });
+                let location = `http://${req.headers.host}${req.url}/${data._id}`;
+                res.writeHead(201, { 'Content-type': 'application/json', 'Location': location });
                 res.end(JSON.stringify(data));
             })
             .catch(err => {

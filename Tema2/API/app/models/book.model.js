@@ -8,7 +8,7 @@ const BookSchema = Schema({
     title: String,
     // publishingData: Date,
     author: { type: Schema.Types.Number, ref: 'Author' }
-});
+}, { versionKey: false });
 
 BookSchema.plugin(autoIncrement.plugin, 'Book');
 

@@ -1,6 +1,6 @@
 const Book = require('../models/book.model');
 const Author = require('../models/author.model');
-const mongoose = require('mongoose');
+const url = require('url');
 
 module.exports = {
     getAll: (req, res) => {
@@ -84,7 +84,8 @@ module.exports = {
 
                 book.save()
                     .then(data => {
-                        res.writeHead(200, { 'Content-type': 'application/json' });
+                        let location = `http://${req.headers.host}${req.url}/${data._id}`;
+                        res.writeHead(201, { 'Content-type': 'application/json', 'Location': location });
                         res.end(JSON.stringify(data));
                     })
                     .catch(err => {
