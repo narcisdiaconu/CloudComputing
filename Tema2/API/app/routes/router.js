@@ -7,9 +7,6 @@ module.exports = {
         res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 
-        let parsedUrl = req.url.split('/');
-        parsedUrl.splice(0, 2);
-
         let citiesBaseUrl = '/api/cities';
         let citiesIdUrl = '/api/cities/([0-9]+)';
         let attractionBaseUrl = '/api/cities/([0-9]+)/attractions';
@@ -154,7 +151,6 @@ module.exports = {
                     }
 
                     break;
-
                 case 'PUT':
                     if (req.headers['content-type'] !== 'application/json') {
                         res.writeHead(400);
@@ -203,7 +199,6 @@ module.exports = {
                             return;
                         }
                     }
-
 
                     break;
             }

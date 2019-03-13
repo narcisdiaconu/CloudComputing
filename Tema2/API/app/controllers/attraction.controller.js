@@ -30,6 +30,7 @@ module.exports = {
                 res.end(err.message);
             });
     },
+
     getById: (req, res) => {
         City.findById(req.cityId)
             .then(city => {
@@ -68,6 +69,7 @@ module.exports = {
                 res.end(err.message);
             });
     },
+
     create: (req, res) => {
         City.findById(req.cityId)
             .then(city => {
@@ -106,6 +108,7 @@ module.exports = {
                 res.end(err.message);
             });
     },
+
     update: (req, res) => {
         City.findById(req.cityId)
             .then(city => {
@@ -149,6 +152,7 @@ module.exports = {
                 res.end(err.message);
             });
     },
+
     delete: (req, res) => {
         City.findById(req.cityId)
             .then(city => {

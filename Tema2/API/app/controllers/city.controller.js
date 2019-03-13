@@ -34,6 +34,7 @@ module.exports = {
                 res.end(err.message);
             });
     },
+
     getById: (req, res) => {
         City.findById(req.id)
             .then(city => {
@@ -55,6 +56,7 @@ module.exports = {
                 res.end(err.message);
             });
     },
+
     create: (req, res) => {
         let checkParams = checkParametres(req.body)
         if (checkParams.error) {
@@ -81,6 +83,7 @@ module.exports = {
                 res.end(err.message);
             });
     },
+
     delete: (req, res) => {
         City.findByIdAndRemove(req.id)
             .then(city => {
@@ -103,6 +106,7 @@ module.exports = {
                 res.end(err.message);
             });
     },
+
     update: (req, res) => {
         let checkParams = checkParametres(req.body);
         if (checkParams.error) {
