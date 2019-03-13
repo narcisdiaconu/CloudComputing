@@ -7,7 +7,7 @@ module.exports = {
             .then(city => {
                 if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`City with id ${req.id} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
                 Attraction.find({ city: req.cityId })
@@ -23,7 +23,7 @@ module.exports = {
             .catch(err => {
                 if (err.kind === 'ObjectId') {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`City with id ${req.id} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
                 res.writeHead(500);
@@ -35,7 +35,7 @@ module.exports = {
             .then(city => {
                 if (!city) {
                     res.writeHead(404, { 'Content-type': 'text/plain' });
-                    res.end(`City with id ${req.id} not found.`);
+                    res.end(`City with id ${req.cityId} not found.`);
                     return;
                 }
                 Attraction.findOne({ _id: req.attractionId, city: req.cityId })
