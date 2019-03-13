@@ -10,6 +10,11 @@ module.exports = {
         let parsedUrl = req.url.split('/');
         parsedUrl.splice(0, 2);
 
+        let citiesBaseUrl = '/api/cities';
+        let citiesIdUrl = '/api/cities/([0-9]+)';
+        let attractionBaseUrl = '/api/cities/([0-9]+)/attractions';
+        let attractionIdUrl = '/api/cities/([0-9]+)/attractions/([0-9]+)';
+
         let body = '';
         req.on('data', (data) => {
             body += data;
@@ -24,57 +29,48 @@ module.exports = {
                     return;
                 }
             }
+            let match = [];
             switch (req.method) {
                 case 'GET':
-                    if (parsedUrl[0] === 'cities' && parsedUrl.length === 1) {
-                        cityController.getAll(req, res);
-                        return;
+                    match = req.url.match(citiesBaseUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            cityController.getAll(req, res);
+                            return;
+                        }
                     }
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl.length === 2) {
-                        let numberRegex = '[0-9]+';
-                        if (!parsedUrl[1].match(numberRegex)) {
-                            res.writeHead(400);
-                            res.end();
+                    match = req.url.match(citiesIdUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            req.id = parseInt(match[1]);
+                            cityController.getById(req, res);
                             return;
-                        } else {
-                            req.id = parseInt(parsedUrl[1]);
                         }
-                        cityController.getById(req, res);
-                        return;
                     }
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl[2] === 'attractions' && parsedUrl.length === 3) {
-                        let numberRegex = '[0-9]+';
-                        if (!parsedUrl[1].match(numberRegex)) {
-                            res.writeHead(400);
-                            res.end();
+                    match = req.url.match(attractionBaseUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            req.cityId = parseInt(match[1]);
+                            attractionController.getAll(req, res);
                             return;
-                        } else {
-                            req.cityId = parseInt(parsedUrl[1]);
                         }
-                        attractionController.getAll(req, res);
-                        return;
+
                     }
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl[2] === 'attractions' && parsedUrl.length === 4) {
-                        let numberRegex = '[0-9]+';
-                        if (!parsedUrl[1].match(numberRegex)) {
-                            res.writeHead(400);
-                            res.end();
+                    match = req.url.match(attractionIdUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            req.cityId = parseInt(match[1]);
+                            req.attractionId = parseInt(match[2]);
+                            attractionController.getById(req, res);
                             return;
-                        } else {
-                            req.cityId = parseInt(parsedUrl[1]);
-                            if (!parsedUrl[3].match(numberRegex)) {
-                                res.writeHead(400);
-                                res.end();
-                                return;
-                            } else {
-                                req.attractionId = parseInt(parsedUrl[3]);
-                            }
                         }
-                        attractionController.getById(req, res);
-                        return;
                     }
 
                     break;
@@ -85,75 +81,76 @@ module.exports = {
                         return;
                     }
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl.length === 1) {
-                        cityController.create(req, res);
-                        return;
+                    match = req.url.match(citiesBaseUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            cityController.create(req, res);
+                            return;
+                        }
                     }
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl.length === 2) {
-                        let numberRegex = '[0-9]+';
-                        if (!parsedUrl[1].match(numberRegex)) {
-                            res.writeHead(400);
+                    match = req.url.match(citiesIdUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            res.writeHead(404);
                             res.end();
                             return;
                         }
-                        res.writeHead(404);
-                        res.end();
-                        return;
                     }
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl[2] === 'attractions' && parsedUrl.length === 3) {
-                        let numberRegex = '[0-9]+';
-                        if (!parsedUrl[1].match(numberRegex)) {
-                            res.writeHead(400);
-                            res.end();
+                    match = req.url.match(attractionBaseUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            req.cityId = parseInt(match[1]);
+                            attractionController.create(req, res);
                             return;
-                        } else {
-                            req.cityId = parseInt(parsedUrl[1]);
                         }
-                        attractionController.create(req, res);
-                        return;
                     }
 
                     break;
                 case 'DELETE':
-                    if (parsedUrl[0] === 'cities' && parsedUrl.length === 2) {
-                        let numberRegex = '[0-9]+';
-                        if (!parsedUrl[1].match(numberRegex)) {
-                            res.writeHead(400);
-                            res.end();
+                    match = req.url.match(citiesIdUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            req.id = parseInt(match[1]);
+                            cityController.delete(req, res);
                             return;
-                        } else {
-                            req.id = parseInt(parsedUrl[1]);
                         }
-                        cityController.delete(req, res);
-                        return;
                     }
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl.length === 1) {
-                        res.writeHead(405);
-                        res.end();
-                        return;
-                    }
+                    match = req.url.match(citiesBaseUrl);
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl[2] === 'attractions' && parsedUrl.length === 4) {
-                        let numberRegex = '[0-9]+';
-                        if (!parsedUrl[1].match(numberRegex)) {
-                            res.writeHead(400);
+                    if (match) {
+                        if (match[0] === req.url) {
+                            res.writeHead(405);
                             res.end();
                             return;
-                        } else {
-                            req.cityId = parseInt(parsedUrl[1]);
-                            if (!parsedUrl[3].match(numberRegex)) {
-                                res.writeHead(400);
-                                res.end();
-                                return;
-                            } else {
-                                req.attractionId = parseInt(parsedUrl[3]);
-                            }
                         }
-                        attractionController.delete(req, res);
-                        return;
+                    }
+
+                    match = req.url.match(attractionBaseUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            res.writeHead(405);
+                            res.end();
+                            return;
+                        }
+                    }
+
+                    match = req.url.match(attractionIdUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            req.cityId = parseInt(match[1]);
+                            req.attractionId = parseInt(match[2]);
+                            attractionController.delete(req, res);
+                            return;
+                        }
                     }
 
                     break;
@@ -165,44 +162,48 @@ module.exports = {
                         return;
                     }
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl.length === 2) {
-                        let numberRegex = '[0-9]+';
-                        if (!parsedUrl[1].match(numberRegex)) {
-                            res.writeHead(400);
-                            res.end();
+                    match = req.url.match(citiesIdUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            req.id = parseInt(match[1]);
+                            cityController.update(req, res);
                             return;
-                        } else {
-                            req.id = parseInt(parsedUrl[1]);
                         }
-                        cityController.update(req, res);
-                        return;
                     }
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl.length === 1) {
-                        res.writeHead(405);
-                        res.end();
-                        return;
-                    }
+                    match = req.url.match(citiesBaseUrl);
 
-                    if (parsedUrl[0] === 'cities' && parsedUrl[2] === 'attractions' && parsedUrl.length === 4) {
-                        let numberRegex = '[0-9]+';
-                        if (!parsedUrl[1].match(numberRegex)) {
-                            res.writeHead(400);
+                    if (match) {
+                        if (match[0] === req.url) {
+                            res.writeHead(405);
                             res.end();
                             return;
-                        } else {
-                            req.cityId = parseInt(parsedUrl[1]);
-                            if (!parsedUrl[3].match(numberRegex)) {
-                                res.writeHead(400);
-                                res.end();
-                                return;
-                            } else {
-                                req.attractionId = parseInt(parsedUrl[3]);
-                            }
                         }
-                        attractionController.update(req, res);
-                        return;
                     }
+
+                    match = req.url.match(attractionBaseUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            res.writeHead(405);
+                            res.end();
+                            return;
+                        }
+                    }
+
+
+                    match = req.url.match(attractionIdUrl);
+
+                    if (match) {
+                        if (match[0] === req.url) {
+                            req.cityId = parseInt(match[1]);
+                            req.attractionId = parseInt(match[2]);
+                            attractionController.update(req, res);
+                            return;
+                        }
+                    }
+
 
                     break;
             }

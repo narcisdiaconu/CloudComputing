@@ -6,30 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "GET authors",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "localhost:8000/api/authors",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"authors"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST authors",
+			"name": "POST cities",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -42,24 +19,71 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"firstName\": \"Author\",\n   \"lastName\": \"Author\"\n}"
+					"raw": "{\n   \"name\": \"Iasi\",\n   \"country\": \"Romania\",\n   \"latitude\": 47.14555556,\n   \"longitude\": 27.58888889\n}"
 				},
 				"url": {
-					"raw": "localhost:8000/api/authors",
+					"raw": "localhost:8000/api/cities",
 					"host": [
 						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"api",
-						"authors"
+						"cities"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "PUT authors",
+			"name": "GET cities",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8000/api/cities",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"cities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET cities/:id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8000/api/cities/0",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"cities",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT cities",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -72,17 +96,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"firstName\": \"FirstNameChanged\",\n   \"lastName\": \"LastNameChanged\"\n}"
+					"raw": "{\n   \"name\": \"Bucharest\",\n   \"country\": \"Romania\",\n   \"latitude\": 47.14555556,\n   \"longitude\": 27.58888889\n}"
 				},
 				"url": {
-					"raw": "localhost:8000/api/authors/0",
+					"raw": "localhost:8000/api/cities/0",
 					"host": [
 						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"api",
-						"authors",
+						"cities",
 						"0"
 					]
 				}
@@ -90,7 +114,7 @@
 			"response": []
 		},
 		{
-			"name": "DELETE authors",
+			"name": "DELETE cities",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -99,14 +123,14 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8000/api/authors/0",
+					"raw": "localhost:8000/api/cities/0",
 					"host": [
 						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"api",
-						"authors",
+						"cities",
 						"0"
 					]
 				}
@@ -114,63 +138,39 @@
 			"response": []
 		},
 		{
-			"name": "GET authors/:id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "localhost:8000/api/authors/14",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"authors",
-						"14"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST books",
+			"name": "POST attractions",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"title\": \"NewBook\"\n}"
+					"raw": "{\n\t\"name\": \"Palatul Culturii\",\n\t\"description\" : \"Palatul Culturii din Iași este o clădire emblematică, construită, în perioada 1906 - 1925, în perimetrul fostei curți domnești medievale moldovenești, pe locul fostului palat domnesc.\",\n\t\"address\": \"Piața Ștefan cel Mare și Sfânt, nr. 1\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8000/api/authors/0/books",
+					"raw": "localhost:8000/api/cities/0/attractions",
 					"host": [
 						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"api",
-						"authors",
+						"cities",
 						"0",
-						"books"
+						"attractions"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GET books",
+			"name": "GET attractions",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -179,48 +179,41 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8000/api/authors/0/books",
+					"raw": "localhost:8000/api/cities/0/attractions",
 					"host": [
 						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"api",
-						"authors",
+						"cities",
 						"0",
-						"books"
+						"attractions"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "PUT books",
+			"name": "GET attractions/:id",
 			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
+				"method": "GET",
+				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"title\" : \"Title changed\"\n}"
+					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8000/api/authors/0/books/0",
+					"raw": "localhost:8000/api/cities/0/attractions/0",
 					"host": [
 						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"api",
-						"authors",
+						"cities",
 						"0",
-						"books",
+						"attractions",
 						"0"
 					]
 				}
@@ -228,7 +221,40 @@
 			"response": []
 		},
 		{
-			"name": "DELETE books",
+			"name": "PUT attractions",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Palatul Culturii\",\n    \"description\": \"no description\",\n    \"address\": \"Piața Ștefan cel Mare și Sfânt, nr. 1\",\n    \"city\": 0\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/api/cities/0/attractions/0",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"cities",
+						"0",
+						"attractions",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE attractions",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -237,16 +263,16 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8000/api/authors/0/books/0",
+					"raw": "localhost:8000/api/cities/0/attractions/0",
 					"host": [
 						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"api",
-						"authors",
+						"cities",
 						"0",
-						"books",
+						"attractions",
 						"0"
 					]
 				}
